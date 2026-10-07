@@ -1,4 +1,5 @@
 const REDACTED = "[REDACTED]";
+const REDACTED_URL = "[REDACTED_URL]";
 const CIRCULAR = "[CIRCULAR]";
 
 const SENSITIVE_KEYS = new Set([
@@ -11,6 +12,10 @@ const SENSITIVE_KEYS = new Set([
   "cookie",
   "devicecode",
   "email",
+  "expire",
+  "expires",
+  "guarantee",
+  "guids",
   "idtoken",
   "pass",
   "passwd",
@@ -22,6 +27,8 @@ const SENSITIVE_KEYS = new Set([
   "secret",
   "sessionid",
   "setcookie",
+  "sign",
+  "signature",
   "token",
   "userid",
   "xapikey",
@@ -32,6 +39,7 @@ const AUTHORIZATION_HEADER_PATTERN =
   /\b(authorization|proxy-authorization)(\s*:\s*)[^\r\n]*/gi;
 const STRING_ASSIGNMENT_PATTERN =
   /\b(authorization|proxy-authorization|cookie|set-cookie|password|passwd|access_token|refresh_token|id_token|api_key|client_secret|device_code|token)(\s*[:=]\s*)(?:bearer\s+)?[^\s&,;]+/gi;
+const EMBEDDED_URL_PATTERN = /https?:\/\/[^\s"'<>]+/gi;
 
 function normalizeKey(key) {
   return String(key).replace(/[^a-z0-9]/gi, "").toLowerCase();
@@ -41,32 +49,32 @@ function isSensitiveKey(key) {
   return SENSITIVE_KEYS.has(normalizeKey(key));
 }
 
-function sanitizeString(value) {
+function sanitizeUrl() {
+  // Signed capabilities cannot be identified reliably from their path or
+  // parameter names. Diagnostics therefore never retain absolute URLs.
+  return REDACTED_URL;
+}
+
+function sanitizeEmbeddedUrl(value) {
   try {
-    const url = new URL(value);
-    let changed = false;
-
-    for (const key of [...url.searchParams.keys()]) {
-      if (isSensitiveKey(key)) {
-        url.searchParams.set(key, REDACTED);
-        changed = true;
-      }
-    }
-
-    if (url.username || url.password) {
-      url.username = REDACTED;
-      url.password = REDACTED;
-      changed = true;
-    }
-
-    if (changed) {
-      return url.toString();
-    }
+    const sanitized = sanitizeUrl(new URL(value));
+    return sanitized || value;
   } catch {
-    // Most diagnostic strings are not URLs. Continue with text redaction.
+    return value;
+  }
+}
+
+function sanitizeString(value) {
+  if (/^https?:\/\//i.test(value)) {
+    try {
+      return sanitizeUrl(new URL(value));
+    } catch {
+      // Malformed URL-like text continues through generic string redaction.
+    }
   }
 
   return value
+    .replace(EMBEDDED_URL_PATTERN, sanitizeEmbeddedUrl)
     .replace(
       AUTHORIZATION_HEADER_PATTERN,
       (_match, key, separator) => `${key}${separator}${REDACTED}`,

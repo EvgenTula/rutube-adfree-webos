@@ -24,7 +24,7 @@ and [Developer Mode guide](https://webostv.developer.lge.com/develop/getting-sta
 
 ## Local validation and tests
 
-Run the diagnostics tests:
+Run the diagnostics, HTTP, catalog, playback-source, and manifest tests:
 
 ```sh
 npm test
@@ -40,6 +40,12 @@ npm run check
 The build has no downloaded inputs. `scripts/build.js` copies the app sources
 and deterministically generates the required 80x80 icon, 130x130 large icon,
 and 1920x1080 splash PNG files. `dist/` is disposable and ignored by Git.
+
+Run only the contract foundation tests with:
+
+```sh
+npm run test:contracts
+```
 
 ## Create an IPK
 

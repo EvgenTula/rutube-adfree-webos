@@ -1,0 +1,37 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/v2/video/recommendation/main",
+    "basis": "sanitized-observation",
+    "sanitized": true
+  },
+  "count": 2,
+  "has_next": true,
+  "next": "<redacted-continuation-url>",
+  "previous": null,
+  "page": 1,
+  "per_page": 2,
+  "results": [
+    {
+      "id": "2458766add765d8048f731ee2eaaf926",
+      "title": "Public VOD fixture",
+      "duration": 342,
+      "is_adult": false,
+      "is_livestream": false,
+      "is_on_air": false,
+      "content_type": "video"
+    },
+    {
+      "content_type": "video",
+      "object_id": "0ed0696149c131d3a7349372d730d4e6",
+      "object": {
+        "id": "0ed0696149c131d3a7349372d730d4e6",
+        "title": "Public live fixture",
+        "duration": 0,
+        "is_adult": false,
+        "is_livestream": true,
+        "is_on_air": true
+      }
+    }
+  ]
+}

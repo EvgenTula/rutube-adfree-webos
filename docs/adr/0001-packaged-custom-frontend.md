@@ -220,6 +220,7 @@ failures are not thrown through screen code.
 | --- | --- | --- |
 | `cancelled` | A newer navigation or playback intent superseded the request | Silent; never shown as a failure |
 | `offline` | Network unavailable before a response | Retry action; log sanitized network class |
+| `opaque-network` | Fetch was rejected but the web runtime cannot distinguish CORS from DNS/TLS/routing failure | Retry required JSON; for advisory manifest inspection, warn and preserve native playback |
 | `timeout` | Bounded request or media-start deadline expired | Retry action; log operation and duration |
 | `http` | Unexpected response status | Retry when appropriate; log status, never response secrets |
 | `cors-rejected` | Packaged origin cannot reach a required resource | Terminal spike result; triggers architecture rollback review |
@@ -237,6 +238,13 @@ manifest or advertising marker produces a warning and preserves the original
 source; it never triggers guessed segment deletion. If a marker makes the stream
 incompatible with the native player, resolution returns
 `manifest-unsupported` rather than rewriting the stream.
+
+The Fetch API exposes CORS, DNS, TLS, and some routing failures as the same
+opaque rejection. The HTTP adapter reports `opaque-network` rather than claiming
+confirmed CORS. Required JSON requests retain that typed failure. Advisory HLS
+inspection may degrade it to a warning because the native media pipeline can
+still access a source that JavaScript Fetch cannot; actual playback remains the
+device-level arbiter.
 
 ## Data flow
 

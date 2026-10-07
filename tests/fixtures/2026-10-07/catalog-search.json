@@ -1,0 +1,29 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/search/combined/video_playlist",
+    "basis": "sanitized-observation",
+    "sanitized": true
+  },
+  "count": 2,
+  "has_next": false,
+  "next": null,
+  "previous": null,
+  "current_page": 1,
+  "per_page": 20,
+  "results": [
+    {
+      "id": "4ceb9757e7eec396856b7c7b08b7565a",
+      "title": "Search video fixture",
+      "duration": 2659,
+      "is_livestream": false,
+      "is_on_air": false,
+      "content_type": "video"
+    },
+    {
+      "id": "playlist-fixture",
+      "title": "Non-video result",
+      "content_type": "playlist"
+    }
+  ]
+}

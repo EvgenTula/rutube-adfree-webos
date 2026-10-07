@@ -1,0 +1,16 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/play/options/{id}/",
+    "basis": "sanitized-observation",
+    "sanitized": true
+  },
+  "video_id": "7716bd3e665725c3c008ae7ab4ff02e2",
+  "has_video": false,
+  "blocking_rule": {
+    "code": "rights_holder",
+    "message": "Unavailable by rights-holder decision"
+  },
+  "video_balancer": {},
+  "live_streams": {}
+}

@@ -1,0 +1,21 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/play/options/{id}/",
+    "basis": "sanitized-observation",
+    "sanitized": true
+  },
+  "video_id": "2458766add765d8048f731ee2eaaf926",
+  "duration": 341718,
+  "has_video": true,
+  "is_licensed": false,
+  "is_paid": false,
+  "video_balancer": {
+    "default": "https://media.invalid/vod/master.m3u8?expire=1893456000",
+    "m3u8": "https://media.invalid/vod/master.m3u8?expire=1893456000"
+  },
+  "advert": [],
+  "cuepoints": [],
+  "drm_token": null,
+  "live_streams": {}
+}

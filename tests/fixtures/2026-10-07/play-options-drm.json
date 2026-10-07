@@ -1,0 +1,17 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/play/options/{id}/",
+    "basis": "synthetic-contract-case",
+    "sanitized": true
+  },
+  "video_id": "drm-fixture-id",
+  "has_video": true,
+  "is_paid": false,
+  "drm_token": "<redacted-drm-token>",
+  "drm_type": "widevine",
+  "video_balancer": {
+    "m3u8": "https://media.invalid/drm/master.m3u8?expire=1893456000"
+  },
+  "live_streams": {}
+}

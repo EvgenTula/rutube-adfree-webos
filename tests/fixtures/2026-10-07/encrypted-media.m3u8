@@ -1,0 +1,6 @@
+#EXTM3U
+#EXT-X-TARGETDURATION:6
+#EXT-X-KEY:METHOD=AES-128,URI="https://keys.invalid/key"
+#EXTINF:6.0,
+segment-1.ts
+#EXT-X-ENDLIST

@@ -1,0 +1,15 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/play/options/{id}/",
+    "basis": "synthetic-contract-case",
+    "sanitized": true
+  },
+  "video_id": "paid-fixture-id",
+  "has_video": true,
+  "is_paid": true,
+  "video_balancer": {
+    "m3u8": "https://media.invalid/paid/master.m3u8?expire=1893456000"
+  },
+  "live_streams": {}
+}

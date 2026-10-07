@@ -42,6 +42,15 @@ for (const resource of [appInfo.main, appInfo.icon, appInfo.largeIcon, appInfo.s
   assert(existsSync(path) && statSync(path).isFile(), `missing app resource: ${resource}`);
 }
 
+for (const modulePath of [
+  "js/rutube-http.js",
+  "js/catalog.js",
+  "js/hls.js",
+  "js/playback-sources.js",
+]) {
+  assert(existsSync(join(outputDir, modulePath)), `missing application module: ${modulePath}`);
+}
+
 const imageRequirements = [
   ["small icon", appInfo.icon, 80, 80],
   ["large icon", appInfo.largeIcon, 130, 130],

@@ -83,12 +83,39 @@ test("redacts sensitive URL query values and credentials embedded in strings", (
 
   assert.equal(
     sanitized.url,
-    "https://example.test/video?id=public&token=%5BREDACTED%5D&device_code=%5BREDACTED%5D",
+    "[REDACTED_URL]",
   );
   assert.equal(sanitized.header, "Authorization: [REDACTED]");
   assert.equal(sanitized.basicHeader, "Authorization: [REDACTED]");
   assert.equal(sanitized.cookieText, "Cookie: [REDACTED]");
   assert.deepEqual(sanitized.requestHeaders, { "x-api-key": "[REDACTED]" });
+});
+
+test("redacts every capability-bearing field from signed media URLs", () => {
+  const source =
+    "https://media.example.test/route/video.m3u8?guids=viewer-id&sign=signature-secret&expire=1893456000&guarantee=session-secret&scheme=https";
+
+  const output = JSON.stringify(sanitizeForDiagnostics({ source }));
+
+  assert.doesNotMatch(output, /viewer-id|signature-secret|1893456000|session-secret/);
+  assert.doesNotMatch(output, /media\.example\.test|video\.m3u8/);
+  assert.deepEqual(sanitizeForDiagnostics({ source }), {
+    source: "[REDACTED_URL]",
+  });
+
+  const manifestLine = `#EXT-X-STREAM-INF:BANDWIDTH=1\n${source}\n`;
+  const sanitizedManifest = sanitizeForDiagnostics({ manifest: manifestLine });
+  assert.doesNotMatch(sanitizedManifest.manifest, /media\.example\.test|video\.m3u8|signature-secret/);
+  assert.match(sanitizedManifest.manifest, /\[REDACTED_URL\]/);
+
+  const pathSigned = "https://cdn.example.test/path-signature/video/master.m3u8";
+  assert.deepEqual(sanitizeForDiagnostics({ message: `playing ${pathSigned}` }), {
+    message: "playing [REDACTED_URL]",
+  });
+  const punctuated = sanitizeForDiagnostics({
+    message: `failed (${pathSigned}).`,
+  });
+  assert.doesNotMatch(punctuated.message, /cdn\.example\.test|master\.m3u8/);
 });
 
 test("debug mode never weakens redaction", () => {
@@ -105,7 +132,7 @@ test("debug mode never weakens redaction", () => {
   assert.deepEqual(JSON.parse(output).details, {
     status: 401,
     password: "[REDACTED]",
-    url: "https://example.test/?api_key=%5BREDACTED%5D",
+    url: "[REDACTED_URL]",
   });
 });
 

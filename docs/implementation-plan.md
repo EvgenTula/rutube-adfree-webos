@@ -11,14 +11,16 @@ RUTUBE playback is proven on the target LG C1.
 - Phase 0 local source/build/diagnostics baseline is complete; packaging and all
   LG C1 checks remain pending.
 - Phase 1 desktop/network research is recorded in three reports under
-  `docs/research/`. It is sufficient for the playback spike, but the phase exit
-  remains open for sanitized fixtures and device/account-dependent evidence.
+  `docs/research/`. Dated sanitized fixtures and executable catalog/source/HLS
+  contracts are now present. The phase exit remains open for device/account-
+  dependent evidence.
 - The architecture direction is recorded in
   [`ADR 0001`](adr/0001-packaged-custom-frontend.md): a packaged custom frontend
   with native HLS playback. It is accepted for the Phase 2 spike and remains
   conditional on the real-device gate.
-- Phase 2 and every LG C1 result are pending. No desktop or research result is a
-  device pass.
+- The Phase 2 contract foundation is implemented locally; UI/player integration
+  and every LG C1 result are pending. No desktop or fixture result is a device
+  pass.
 
 ## Phase 0: repository and target baseline
 
@@ -47,10 +49,12 @@ pending; therefore the Phase 0 exit gate is **not complete**.
 **Status (2026-10-07):** the existing-client/platform, current RUTUBE flow, and
 Rupoop protocol reports are complete. Anonymous desktop/network evidence covers
 catalog, search, details, VOD/live source selection, sampled HLS manifests, and
-the likely player-side advertising path. Sanitized executable fixtures, an
-actual ad break on the target network/device, source-expiry/CORS behavior, and
-unobserved media formats remain pending. The evidence is sufficient to start
-Phase 2, but the full Phase 1 exit gate is **not complete**.
+the likely player-side advertising path. Dated sanitized fixtures now exercise
+the observed contracts plus paid, unavailable, DRM, malformed, markers, and
+encryption cases. An actual ad break on the target network/device, live source-
+expiry/CORS behavior, and unobserved media formats remain pending. The evidence
+is sufficient to continue Phase 2, but the full Phase 1 exit gate is **not
+complete**.
 
 ### Work
 
@@ -83,8 +87,10 @@ Phase 2, but the full Phase 1 exit gate is **not complete**.
 
 ## Phase 2: real-device playback spike
 
-**Status (2026-10-07):** pending. No playback, CORS, lifecycle, codec, or
-long-run result has been recorded on the target LG C1.
+**Status (2026-10-07):** the HTTP, catalog, source-resolution, and HLS-inspection
+contracts are implemented and pass local fixture tests. Player/UI integration
+is not yet implemented. No playback, CORS, lifecycle, codec, or long-run result
+has been recorded on the target LG C1.
 
 ### Work
 

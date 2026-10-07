@@ -1,0 +1,19 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/video/{id}/",
+    "basis": "sanitized-observation",
+    "sanitized": true
+  },
+  "id": "2458766add765d8048f731ee2eaaf926",
+  "title": "Public VOD fixture",
+  "description": "Sanitized description",
+  "duration": 342,
+  "is_livestream": false,
+  "is_on_air": false,
+  "is_licensed": false,
+  "is_paid": false,
+  "origin_type": "rtb",
+  "stream_type": null,
+  "author": { "name": "Fixture author" }
+}

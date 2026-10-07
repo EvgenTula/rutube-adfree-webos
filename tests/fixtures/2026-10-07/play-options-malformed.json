@@ -1,0 +1,12 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/play/options/{id}/",
+    "basis": "synthetic-contract-case",
+    "sanitized": true
+  },
+  "video_id": "malformed-fixture-id",
+  "has_video": true,
+  "video_balancer": "unexpected-string",
+  "live_streams": []
+}

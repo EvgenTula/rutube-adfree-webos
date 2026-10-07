@@ -1,0 +1,26 @@
+{
+  "_fixture": {
+    "observed": "2026-10-07",
+    "endpoint": "/api/play/options/{id}/",
+    "basis": "sanitized-observation",
+    "sanitized": true
+  },
+  "video_id": "0ed0696149c131d3a7349372d730d4e6",
+  "duration": null,
+  "has_video": true,
+  "is_paid": false,
+  "video_balancer": {},
+  "advert": [],
+  "cuepoints": [],
+  "drm_token": null,
+  "live_streams": {
+    "hls": [
+      {
+        "is_audio": true,
+        "is_video": true,
+        "is_dvr": true,
+        "url": "https://media.invalid/live/master.m3u8?expire=1893456000"
+      }
+    ]
+  }
+}
