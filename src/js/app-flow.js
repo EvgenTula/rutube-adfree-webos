@@ -35,8 +35,19 @@ function cloneView(state) {
   };
 }
 
-function defaultDelay(milliseconds) {
-  return new Promise((resolve) => setTimeout(resolve, milliseconds));
+function defaultDelay(milliseconds, signal) {
+  return new Promise((resolve) => {
+    let settled = false;
+    const finish = () => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      if (signal) signal.removeEventListener("abort", finish);
+      resolve();
+    };
+    const timer = setTimeout(finish, milliseconds);
+    if (signal) signal.addEventListener("abort", finish, { once: true });
+  });
 }
 
 /** Composition root for catalog, source resolution, playback, and navigation. */
@@ -134,7 +145,7 @@ export function createAppFlow({
         attempt,
         code: errorCode(result),
       });
-      await delay(retryDelayMs);
+      await delay(retryDelayMs, entry.controller.signal);
       if (!current(entry)) return { ok: false, error: { code: "cancelled", operation: entry.name } };
     }
     return result;

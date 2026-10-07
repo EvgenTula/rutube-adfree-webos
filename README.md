@@ -22,22 +22,30 @@ authentication, or access controls.
   a reliable manual switch.
 - Dated sanitized fixtures cover catalog, VOD, live, unavailable, paid, DRM,
   malformed, marker, and encryption response shapes.
+- The official LG `@webos-tools/cli` is pinned for reproducible local/CI IPK
+  packaging; every package receives a SHA-256 provenance sidecar.
+- Shipped JavaScript and CSS are checked against the webOS 6 Chromium 79
+  compatibility baseline.
 - Installation, playback, remote behavior, CORS, codecs, screensaver behavior,
   and long-run stability on an actual LG C1 are **not yet verified**.
 
 See [MVP architecture and behavior](docs/mvp.md),
 [development and device instructions](docs/development.md), the
+[compatibility statement](docs/compatibility.md), the
 [device-profile template](docs/device-profile.md), and the full
 [implementation plan](docs/implementation-plan.md).
 
 ## Local verification
 
 ```sh
+npm ci
 npm test
 npm run check
+npm run package:webos
 ```
 
-No runtime packages or `npm install` step are required.
+The application has no third-party runtime packages. `npm ci` installs the
+pinned development-only LG packaging CLI.
 
 ## Desktop preview
 
@@ -53,3 +61,6 @@ CORS or TV playback.
 
 Generated `dist/`, `artifacts/`, and `.ipk` files are intentionally not
 committed.
+
+Original project code is licensed under the [MIT License](LICENSE). RUTUBE is a
+third-party service and trademark; see the [unofficial-project notice](NOTICE.md).

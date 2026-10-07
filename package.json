@@ -4,10 +4,11 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "check:syntax": "node --check src/js/diagnostics.js && node --check src/js/rutube-http.js && node --check src/js/catalog.js && node --check src/js/hls.js && node --check src/js/playback-sources.js && node --check src/js/player.js && node --check src/js/navigation.js && node --check src/js/app-flow.js && node --check src/js/dom-renderer.js && node --check src/js/app.js && node --check scripts/build.js && node --check scripts/validate-build.js && node --check scripts/dev-server.js && node --check tests/all.test.js && node --check tests/player.test.js && node --check tests/navigation.test.js && node --check tests/app-flow.integration.test.js && node --check tests/helpers/fake-media-adapter.js",
-    "check": "npm run check:syntax && npm run build && node scripts/validate-build.js",
-    "package:webos": "npm run check && ares-package --outdir artifacts dist",
-    "package:webos:debug": "npm run check && ares-package --no-minify --outdir artifacts dist",
+    "check:syntax": "node --check src/js/diagnostics.js && node --check src/js/rutube-http.js && node --check src/js/catalog.js && node --check src/js/hls.js && node --check src/js/playback-sources.js && node --check src/js/player.js && node --check src/js/navigation.js && node --check src/js/app-flow.js && node --check src/js/dom-renderer.js && node --check src/js/app.js && node --check scripts/build.js && node --check scripts/check-webos-compat.js && node --check scripts/validate-build.js && node --check scripts/write-package-provenance.js && node --check scripts/dev-server.js && node --check tests/all.test.js && node --check tests/player.test.js && node --check tests/navigation.test.js && node --check tests/app-flow.integration.test.js && node --check tests/helpers/fake-media-adapter.js",
+    "check:compat": "node scripts/check-webos-compat.js",
+    "check": "npm run check:syntax && npm run check:compat && npm run build && node scripts/validate-build.js",
+    "package:webos": "npm run check && ares-package --outdir artifacts dist && node scripts/write-package-provenance.js",
+    "package:webos:debug": "npm run check && ares-package --no-minify --outdir artifacts dist && node scripts/write-package-provenance.js --debug",
     "test": "node tests/all.test.js",
     "test:diagnostics": "node tests/diagnostics.test.js",
     "test:contracts": "node tests/catalog.contract.test.js && node tests/hls.test.js && node tests/playback-sources.contract.test.js && node tests/rutube-http.test.js",
@@ -16,6 +17,9 @@
     "dev": "npm run build && node scripts/dev-server.js"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
+  },
+  "devDependencies": {
+    "@webos-tools/cli": "3.2.6"
   }
 }

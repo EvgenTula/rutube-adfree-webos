@@ -386,6 +386,48 @@ test("bounded retry succeeds once and source expiry refresh happens at most once
   flow.stop();
 });
 
+test("stopping during a retry delay aborts the delay and prevents another request", async () => {
+  let homeCalls = 0;
+  let delayStarted = false;
+  let delayAborted = false;
+  const catalog = {
+    async home() {
+      homeCalls += 1;
+      return { ok: false, error: { code: "offline", operation: "home" } };
+    },
+    search: async () => ({ ok: true, value: { items: [], nextCursor: null, total: 0 } }),
+    details: async () => ({ ok: true, value: { videoId: "v", title: "Video" } }),
+  };
+  const player = {
+    snapshot: () => ({ state: "closed" }),
+    subscribe(listener) { listener(this.snapshot()); return () => {}; },
+    close() { return this.snapshot(); },
+    command() { return { ok: false, error: { code: "invalid-state" } }; },
+  };
+  const delay = (_milliseconds, signal) => new Promise((resolveDelay) => {
+    delayStarted = true;
+    signal.addEventListener("abort", () => {
+      delayAborted = true;
+      resolveDelay();
+    }, { once: true });
+  });
+  const flow = createAppFlow({
+    catalog,
+    playbackSources: {},
+    player,
+    navigation: fakeNavigation(),
+    renderer: memoryRenderer(),
+    delay,
+  });
+
+  flow.start();
+  await waitFor(() => delayStarted, "retry delay");
+  flow.stop("test-stop");
+  await waitFor(() => delayAborted, "retry delay abort");
+  await Promise.resolve();
+  assert.equal(homeCalls, 1);
+});
+
 test("Home load-more appends the normalized next page", async () => {
   const seenCursors = [];
   const catalog = {

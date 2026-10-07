@@ -11,5 +11,6 @@
   "iconColor": "#171820",
   "resolution": "1920x1080",
   "disableBackHistoryAPI": true,
+  "requiredACG": [],
   "splashBackground": "assets/splash.png"
 }

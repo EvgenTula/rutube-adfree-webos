@@ -8,8 +8,8 @@ RUTUBE playback is proven on the target LG C1.
 
 ## Current status (2026-10-07)
 
-- Phase 0 local source/build/diagnostics baseline is complete; packaging and all
-  LG C1 checks remain pending.
+- Phase 0 local source/build/diagnostics baseline and reproducible IPK packaging
+  are complete; all LG C1 checks remain pending.
 - Phase 1 desktop/network research is recorded in three reports under
   `docs/research/`. Dated sanitized fixtures and executable catalog/source/HLS
   contracts are now present. The phase exit remains open for device/account-
@@ -22,12 +22,17 @@ RUTUBE playback is proven on the target LG C1.
   UI, and AppFlow are implemented locally. Automated fixture and behavior tests
   pass; every LG C1 result remains pending. No desktop or fixture result is a
   device pass.
+- Phase 6 non-device hardening is implemented: the official LG CLI is pinned,
+  packaging writes provenance, CI covers Node 20/22/24, Chromium 79 hazards are
+  checked, and install/update/uninstall/debug/troubleshooting documentation plus
+  a release-record template are present. Release acceptance remains pending on
+  the physical device.
 
 ## Phase 0: repository and target baseline
 
 **Status (2026-10-07):** the minimal packaged-app source, reproducible local
 build/validation, safe diagnostics, and deployment documentation are present.
-Local checks pass. webOS CLI packaging and every real LG C1 check remain
+Local checks and pinned webOS CLI packaging pass. Every real LG C1 check remains
 pending; therefore the Phase 0 exit gate is **not complete**.
 
 ### Work
@@ -200,10 +205,12 @@ Implement only the strategy supported by Phase 1 evidence:
 
 ## Phase 6: stabilization and release
 
-**Status (2026-10-07):** bounded retry, stale-request cancellation, source
-refresh, route/player cleanup, development preview, and local automated checks
-are implemented. Device endurance, memory, lifecycle, installation, firmware
-coverage, and final IPK evidence remain pending.
+**Status (2026-10-07):** bounded retry (including offline recovery), stale-
+request and retry-delay cancellation, source refresh, route/player/application
+cleanup, ten-session listener coverage, development preview, pinned CLI
+packaging with artifact provenance, CI, and complete operator documentation are
+implemented. Physical-device endurance, memory, lifecycle, installation,
+firmware coverage, and acceptance evidence remain pending.
 
 - Add bounded timeout/retry behavior and stale-request cancellation.
 - Release media resources and event listeners after every playback session.

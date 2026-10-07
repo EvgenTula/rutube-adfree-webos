@@ -294,9 +294,9 @@ and its branding are acceptable. Until then:
 - do not claim that all advertising is removed;
 - fail open to intact content playback when advertising classification is
   uncertain; and
-- select a repository license before accepting copied code or publishing a
-  release. Rupoop is MIT-licensed but remains a protocol reference only;
-  `youtube-webos` is GPL-3.0-only and no code from it is used.
+- apply this repository's MIT license only to original project code. Rupoop is
+  MIT-licensed but remains a protocol reference only; `youtube-webos` is
+  GPL-3.0-only and no code from either project is used.
 
 ## webOS compatibility constraints
 

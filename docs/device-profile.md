@@ -23,7 +23,7 @@ region. Capture the non-sensitive output of this command for firmware/SDK
 cross-checking:
 
 ```sh
-ares-device --system-info --device myTV
+  npm exec -- ares-device --system-info --device myTV
 ```
 
 ## Build
@@ -33,7 +33,7 @@ ares-device --system-info --device myTV
 | Git commit | TODO |
 | Application version | TODO: copy from `src/appinfo.json` |
 | Package filename | TODO |
-| webOS CLI version (`ares -V`) | TODO |
+| webOS CLI version (`npm exec -- ares -V`) | TODO |
 | Package command | `npm run package:webos:debug` |
 
 ## Phase 0 evidence
@@ -48,6 +48,8 @@ ares-device --system-info --device myTV
 | Normal diagnostics | `app.ready` JSON event, no secrets/PII | TODO | PENDING |
 | Debug diagnostics | More verbose mode retains redaction | TODO | PENDING |
 | Relaunch | App opens again after being closed | TODO | PENDING |
+| In-place update | Higher-version package replaces the installed build | TODO | PENDING |
+| Uninstall | App ID disappears from `ares-install --list` | TODO | PENDING |
 
 ## Sanitized notes
 

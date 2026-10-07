@@ -70,13 +70,27 @@ async function start() {
     diagnostics,
   });
 
-  window.addEventListener("error", (event) => {
+  const onError = (event) => {
     diagnostics.error("app.unhandled-error", { error: event.error || event.message });
-  });
-  window.addEventListener("unhandledrejection", (event) => {
+  };
+  const onUnhandledRejection = (event) => {
     diagnostics.error("app.unhandled-rejection", { error: event.reason });
-  });
-  window.addEventListener("pagehide", () => flow.stop("app-stop"), { once: true });
+  };
+  let stopped = false;
+  const stopApplication = (event) => {
+    if (stopped) return;
+    stopped = true;
+    window.removeEventListener("error", onError);
+    window.removeEventListener("unhandledrejection", onUnhandledRejection);
+    window.removeEventListener("pagehide", stopApplication);
+    window.removeEventListener("beforeunload", stopApplication);
+    flow.stop(event && event.type ? event.type : "app-stop");
+  };
+
+  window.addEventListener("error", onError);
+  window.addEventListener("unhandledrejection", onUnhandledRejection);
+  window.addEventListener("pagehide", stopApplication);
+  window.addEventListener("beforeunload", stopApplication);
   flow.start();
 }
 

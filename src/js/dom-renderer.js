@@ -72,10 +72,13 @@ function shellHeader(documentRef, route, dispatch) {
   brand.dataset.focusId = "nav-home";
   header.appendChild(brand);
   const nav = node(documentRef, "nav", "topnav");
+  nav.setAttribute("aria-label", "Основная навигация");
   const home = button(documentRef, "Главная", route === "home" ? "nav-button is-current" : "nav-button", () => dispatch({ type: "OPEN_HOME" }));
   home.dataset.focusId = "nav-home-link";
+  if (route === "home") home.setAttribute("aria-current", "page");
   const search = button(documentRef, "Поиск", route === "search" ? "nav-button is-current" : "nav-button", () => dispatch({ type: "OPEN_SEARCH" }));
   search.dataset.focusId = "nav-search";
+  if (route === "search") search.setAttribute("aria-current", "page");
   nav.appendChild(home);
   nav.appendChild(search);
   header.appendChild(nav);
@@ -102,10 +105,10 @@ function collectFocus(root, route, defaultId, isRoot) {
   return { route, items, defaultId, isRoot };
 }
 
-function renderNotice(documentRef, host, title, message, actionLabel, action) {
+function renderNotice(documentRef, host, title, message, actionLabel, action, urgent = false) {
   const panel = node(documentRef, "section", "notice-panel");
-  panel.setAttribute("role", "status");
-  panel.setAttribute("aria-live", "polite");
+  panel.setAttribute("role", urgent ? "alert" : "status");
+  panel.setAttribute("aria-live", urgent ? "assertive" : "polite");
   panel.appendChild(node(documentRef, "h2", "notice-title", title));
   panel.appendChild(node(documentRef, "p", "notice-copy", message));
   if (actionLabel) {
@@ -118,6 +121,7 @@ function renderNotice(documentRef, host, title, message, actionLabel, action) {
 
 function renderCards(documentRef, host, items, dispatch, nextCursor, loadingMore) {
   const grid = node(documentRef, "section", "card-grid");
+  grid.setAttribute("aria-label", "Видео");
   items.forEach((item, index) => {
     const card = button(documentRef, "", "video-card", () => dispatch({ type: "OPEN_VIDEO", videoId: item.videoId }));
     card.dataset.focusId = `video-${index}`;
@@ -154,7 +158,7 @@ function renderHome(documentRef, root, view, dispatch) {
   content.appendChild(node(documentRef, "p", "eyebrow", "БЕЗ ЛИШНИХ ПРЕРЫВАНИЙ"));
   content.appendChild(node(documentRef, "h1", "screen-title", "Смотреть сейчас"));
   if (view.home.status === "loading") renderNotice(documentRef, content, "Загружаем каталог", "Получаем свежую подборку RUTUBE…");
-  else if (view.home.status === "error") renderNotice(documentRef, content, "Каталог недоступен", errorMessage(view.home.error), view.home.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }));
+  else if (view.home.status === "error") renderNotice(documentRef, content, "Каталог недоступен", errorMessage(view.home.error), view.home.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }), true);
   else if (view.home.status === "empty") renderNotice(documentRef, content, "Здесь пока пусто", "RUTUBE не вернул видео для главной страницы.");
   else renderCards(documentRef, content, view.home.items, dispatch, view.home.nextCursor, view.home.status === "loading-more");
   root.appendChild(content);
@@ -173,6 +177,7 @@ function renderSearch(documentRef, root, view, dispatch) {
   input.type = "search";
   input.value = view.search.query;
   input.placeholder = "Название видео, канал или тема";
+  input.setAttribute("aria-label", "Поисковый запрос");
   input.autocomplete = "off";
   input.dataset.focusId = "search-input";
   input.dataset.dismissTo = "search-submit";
@@ -191,7 +196,7 @@ function renderSearch(documentRef, root, view, dispatch) {
   form.appendChild(submit);
   content.appendChild(form);
   if (view.search.status === "loading") renderNotice(documentRef, content, "Ищем", `Запрос: «${view.search.query}»`);
-  else if (view.search.status === "error") renderNotice(documentRef, content, "Поиск не выполнен", errorMessage(view.search.error), view.search.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }));
+  else if (view.search.status === "error") renderNotice(documentRef, content, "Поиск не выполнен", errorMessage(view.search.error), view.search.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }), true);
   else if (view.search.status === "empty") renderNotice(documentRef, content, "Ничего не найдено", "Попробуйте изменить запрос.");
   else if (view.search.items.length) renderCards(documentRef, content, view.search.items, dispatch, view.search.nextCursor, view.search.status === "loading-more");
   else content.appendChild(node(documentRef, "p", "search-hint", "Введите запрос. Экранная клавиатура webOS появится автоматически."));
@@ -206,7 +211,7 @@ function renderDetails(documentRef, root, view, dispatch) {
   root.appendChild(shellHeader(documentRef, "details", dispatch));
   const content = node(documentRef, "main", "details-screen");
   if (view.details.status === "loading") renderNotice(documentRef, content, "Открываем видео", "Получаем описание…");
-  else if (view.details.status === "error") renderNotice(documentRef, content, "Видео недоступно", errorMessage(view.details.error), view.details.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }));
+  else if (view.details.status === "error") renderNotice(documentRef, content, "Видео недоступно", errorMessage(view.details.error), view.details.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }), true);
   else if (view.details.item) {
     const item = view.details.item;
     const artwork = node(documentRef, "section", "details-artwork");
@@ -242,7 +247,7 @@ function renderPlayer(documentRef, root, view, dispatch) {
   if (playback.status === "resolving" || playback.status === "starting") {
     renderNotice(documentRef, layer, playback.status === "resolving" ? "Ищем поток" : "Запускаем видео", playback.title || "Подождите…");
   } else if (playback.status === "error") {
-    renderNotice(documentRef, layer, "Ошибка воспроизведения", errorMessage(playback.error), playback.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }));
+    renderNotice(documentRef, layer, "Ошибка воспроизведения", errorMessage(playback.error), playback.canRetry ? "Повторить" : null, () => dispatch({ type: "RETRY" }), true);
   } else if (playback.status === "ended") {
     renderNotice(documentRef, layer, "Просмотр завершён", playback.title, "Смотреть ещё раз", () => dispatch({ type: "REPLAY" }));
   } else if (playback.controlsVisible) {
@@ -251,6 +256,7 @@ function renderPlayer(documentRef, root, view, dispatch) {
     top.appendChild(node(documentRef, "span", "quality-label", "Качество: авто · native HLS"));
     layer.appendChild(top);
     const controls = node(documentRef, "section", "player-controls");
+    controls.setAttribute("aria-label", "Управление воспроизведением");
     const back = button(documentRef, "−15 сек", "control-button", () => dispatch({ type: "SEEK", offsetMs: -15000 }));
     back.dataset.focusId = "seek-back";
     back.dataset.column = "0";
@@ -270,6 +276,11 @@ function renderPlayer(documentRef, root, view, dispatch) {
     const progress = node(documentRef, "div", "progress-row");
     const ratio = snapshot.durationMs > 0 ? Math.min(100, snapshot.positionMs / snapshot.durationMs * 100) : 0;
     const track = node(documentRef, "div", "progress-track");
+    track.setAttribute("role", "progressbar");
+    track.setAttribute("aria-label", "Позиция воспроизведения");
+    track.setAttribute("aria-valuemin", "0");
+    track.setAttribute("aria-valuemax", "100");
+    track.setAttribute("aria-valuenow", String(Math.round(ratio)));
     const fill = node(documentRef, "span", "progress-fill");
     fill.style.width = `${ratio}%`;
     track.appendChild(fill);

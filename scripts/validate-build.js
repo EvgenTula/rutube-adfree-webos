@@ -29,6 +29,8 @@ for (const field of ["id", "title", "type", "main", "icon", "version"]) {
 
 assert(appInfo.type === "web", "appinfo.type must be web");
 assert(appInfo.disableBackHistoryAPI === true, "manual Back handling requires disableBackHistoryAPI");
+assert(Array.isArray(appInfo.requiredACG), "appinfo.requiredACG must be an array");
+assert(appInfo.requiredACG.length === 0, "this app does not require Luna Bus access groups");
 assert(/^[a-z0-9][a-z0-9.-]+$/.test(appInfo.id), "appinfo.id has invalid characters");
 assert(/^\d+\.\d+\.\d+$/.test(appInfo.version), "appinfo.version must have three parts");
 assert(appInfo.title.length <= 20, "appinfo.title exceeds 20 characters");
