@@ -98,8 +98,10 @@ prints the generated filename, which contains the ID and version from
 `PACKAGE_FILE.ipk.provenance.json` with the application ID/version, full source
 commit, clean/dirty flag, Node and CLI versions, byte size, and SHA-256 digest.
 Keep the IPK and sidecar together when transferring a candidate. A release
-candidate must have `sourceDirty: false` and a `buildInfo.commit` matching the
-source commit prefix.
+candidate must have a `buildInfo.commit` matching the source commit prefix. It
+should have `sourceDirty: false`; when sandboxing prevents the provenance script
+from invoking Git, that field is `null` and the operator must separately record
+a clean `git status --short` result rather than treating `null` as clean.
 
 ## Connect an LG C1 with Developer Mode
 

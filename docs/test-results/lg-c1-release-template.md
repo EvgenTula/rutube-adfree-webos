@@ -13,7 +13,7 @@ media URLs, or unique personal/device identifiers.
 | App version | TODO |
 | IPK filename | TODO |
 | IPK SHA-256 | TODO |
-| Provenance `sourceDirty` | TODO: must be `false` |
+| Provenance `sourceDirty` | TODO: `false`, or `null` plus separately recorded clean `git status --short` |
 | webOS CLI version | TODO |
 | Full LG C1 model suffix | TODO |
 | Firmware version | TODO |

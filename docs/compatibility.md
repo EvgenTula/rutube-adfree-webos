@@ -6,7 +6,8 @@ The implementation target is LG OLED C1 on webOS 6. LG documents that platform
 with a Chromium 79 web engine. Shipped JavaScript and CSS therefore avoid
 optional chaining, nullish/logical assignment, post-Chromium-79 built-ins,
 flexbox `gap`, and `color-scheme`. `npm run check:compat` enforces these known
-source constraints.
+source constraints with an ES2019 parser and a conservative denylist of newer
+browser APIs and CSS features. It cannot prove runtime media/platform behavior.
 
 The native HTML5 media element is used for HLS. Local contracts currently accept
 unencrypted AVC/AAC HLS observed in sanitized RUTUBE samples. HEVC, VP9, DASH,

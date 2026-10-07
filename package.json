@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "check:syntax": "node --check src/js/diagnostics.js && node --check src/js/rutube-http.js && node --check src/js/catalog.js && node --check src/js/hls.js && node --check src/js/playback-sources.js && node --check src/js/player.js && node --check src/js/navigation.js && node --check src/js/app-flow.js && node --check src/js/dom-renderer.js && node --check src/js/app.js && node --check scripts/build.js && node --check scripts/check-webos-compat.js && node --check scripts/validate-build.js && node --check scripts/write-package-provenance.js && node --check scripts/dev-server.js && node --check tests/all.test.js && node --check tests/player.test.js && node --check tests/navigation.test.js && node --check tests/app-flow.integration.test.js && node --check tests/helpers/fake-media-adapter.js",
+    "check:syntax": "node --check src/js/diagnostics.js && node --check src/js/rutube-http.js && node --check src/js/catalog.js && node --check src/js/hls.js && node --check src/js/playback-sources.js && node --check src/js/player.js && node --check src/js/navigation.js && node --check src/js/app-flow.js && node --check src/js/dom-renderer.js && node --check src/js/app.js && node --check scripts/build.js && node --check scripts/check-webos-compat.js && node --check scripts/package-provenance-lib.js && node --check scripts/validate-build.js && node --check scripts/write-package-provenance.js && node --check scripts/dev-server.js && node --check tests/all.test.js && node --check tests/player.test.js && node --check tests/navigation.test.js && node --check tests/app-flow.integration.test.js && node --check tests/package-provenance.test.js && node --check tests/helpers/fake-media-adapter.js",
     "check:compat": "node scripts/check-webos-compat.js",
     "check": "npm run check:syntax && npm run check:compat && npm run build && node scripts/validate-build.js",
     "package:webos": "npm run check && ares-package --outdir artifacts dist && node scripts/write-package-provenance.js",
@@ -20,6 +20,10 @@
     "node": ">=20"
   },
   "devDependencies": {
-    "@webos-tools/cli": "3.2.6"
+    "@webos-tools/cli": "3.2.6",
+    "acorn": "8.15.0"
+  },
+  "allowScripts": {
+    "@webos-tools/cli@3.2.6": true
   }
 }
