@@ -34,6 +34,36 @@ function unwrapVideo(entry) {
   return entry;
 }
 
+function safeRemoteUrl(value) {
+  if (typeof value !== "string" || !value) return null;
+  try {
+    const parsed = new URL(value);
+    return (parsed.protocol === "https:" || parsed.protocol === "http:") && !parsed.username && !parsed.password
+      ? parsed.toString()
+      : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
+function thumbnailFrom(video) {
+  const candidates = [
+    video.thumbnail_url,
+    video.thumbnailUrl,
+    video.thumbnail,
+    video.picture_url,
+  ];
+  for (const candidate of candidates) {
+    const direct = safeRemoteUrl(candidate);
+    if (direct) return direct;
+    if (candidate && typeof candidate === "object") {
+      const nested = safeRemoteUrl(candidate.url || candidate.src);
+      if (nested) return nested;
+    }
+  }
+  return null;
+}
+
 function normalizeSummary(entry) {
   const video = unwrapVideo(entry);
   if (!video || typeof video.id !== "string" || !video.id || typeof video.title !== "string") {
@@ -43,6 +73,7 @@ function normalizeSummary(entry) {
     videoId: video.id,
     title: video.title,
     durationMs: Math.round(asNonNegativeNumber(video.duration, 0) * 1000),
+    thumbnailUrl: thumbnailFrom(video),
     isLive: video.is_livestream === true,
     isOnAir: video.is_on_air === true,
     isAdult: video.is_adult === true,
@@ -94,6 +125,7 @@ function normalizeDetails(raw) {
       description: typeof video.description === "string" ? video.description : "",
       authorName: author && typeof author.name === "string" ? author.name : "",
       durationMs: Math.round(asNonNegativeNumber(video.duration, 0) * 1000),
+      thumbnailUrl: thumbnailFrom(video),
       isLive: video.is_livestream === true,
       isOnAir: video.is_on_air === true,
       isLicensed: video.is_licensed === true,

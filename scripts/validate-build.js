@@ -28,6 +28,7 @@ for (const field of ["id", "title", "type", "main", "icon", "version"]) {
 }
 
 assert(appInfo.type === "web", "appinfo.type must be web");
+assert(appInfo.disableBackHistoryAPI === true, "manual Back handling requires disableBackHistoryAPI");
 assert(/^[a-z0-9][a-z0-9.-]+$/.test(appInfo.id), "appinfo.id has invalid characters");
 assert(/^\d+\.\d+\.\d+$/.test(appInfo.version), "appinfo.version must have three parts");
 assert(appInfo.title.length <= 20, "appinfo.title exceeds 20 characters");
@@ -48,6 +49,9 @@ for (const modulePath of [
   "js/hls.js",
   "js/playback-sources.js",
   "js/player.js",
+  "js/navigation.js",
+  "js/app-flow.js",
+  "js/dom-renderer.js",
 ]) {
   assert(existsSync(join(outputDir, modulePath)), `missing application module: ${modulePath}`);
 }

@@ -25,6 +25,7 @@ test("home normalizes flat and card-wrapped videos without leaking continuations
         videoId: "2458766add765d8048f731ee2eaaf926",
         title: "Public VOD fixture",
         durationMs: 342000,
+        thumbnailUrl: null,
         isLive: false,
         isOnAir: false,
         isAdult: false,
@@ -33,6 +34,7 @@ test("home normalizes flat and card-wrapped videos without leaking continuations
         videoId: "0ed0696149c131d3a7349372d730d4e6",
         title: "Public live fixture",
         durationMs: 0,
+        thumbnailUrl: null,
         isLive: true,
         isOnAir: true,
         isAdult: false,
@@ -75,12 +77,38 @@ test("details returns a stable model with explicit millisecond duration", async 
       description: "Sanitized description",
       authorName: "Fixture author",
       durationMs: 342000,
+      thumbnailUrl: null,
       isLive: false,
       isOnAir: false,
       isLicensed: false,
       isPaid: false,
     },
   });
+});
+
+test("catalog accepts only HTTP(S) artwork locations", async () => {
+  const catalog = createCatalog({
+    http: {
+      json: async ({ operation }) => ({
+        ok: true,
+        value: operation === "catalog-details"
+          ? { id: "safe", title: "Safe", thumbnail_url: "javascript:alert(1)" }
+          : {
+              results: [
+                { id: "safe", title: "Safe", thumbnail_url: "https://images.invalid/cover.jpg" },
+                { id: "unsafe", title: "Unsafe", thumbnail_url: "data:text/html,bad" },
+                { id: "credential", title: "Credential", thumbnail_url: "https://user:secret@images.invalid/cover.jpg" },
+              ],
+            },
+      }),
+    },
+  });
+
+  const home = await catalog.home();
+  assert.equal(home.value.items[0].thumbnailUrl, "https://images.invalid/cover.jpg");
+  assert.equal(home.value.items[1].thumbnailUrl, null);
+  assert.equal(home.value.items[2].thumbnailUrl, null);
+  assert.equal((await catalog.details({ videoId: "safe" })).value.thumbnailUrl, null);
 });
 
 test("catalog reports malformed required fields and cancellation as typed results", async () => {

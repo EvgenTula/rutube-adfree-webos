@@ -1,34 +1,55 @@
 # RUTUBE AdFree for LG webOS
 
-An early-stage open-source RUTUBE client experiment for LG C1/webOS. The
-repository contains the Phase 0 platform baseline plus the contract foundation
-for a packaged custom frontend: normalized catalog/details access, fresh
-playback-source resolution, safe HTTP failures, and read-only HLS inspection.
-The modules are not wired to the UI or native player yet.
+An experimental anonymous RUTUBE client for LG C1/webOS. The packaged custom
+frontend provides a TV-distance catalog, search, video details, and native HLS
+playback without loading the official embedded player or its separate VAST
+orchestration path.
+
+The name is a project goal, not a guarantee: sampled public sources were direct
+content HLS, but advertising behavior can vary by content, account, region, and
+time. The application does not rewrite manifests or bypass payment, DRM,
+authentication, or access controls.
 
 ## Current status
 
-- Local JavaScript checks, build validation, and unit tests are automated.
-- Dated sanitized fixtures cover catalog, VOD, live, access, paid, DRM,
+- The anonymous MVP is composed end to end through isolated catalog, playback
+  source, native media, navigation, and application-flow modules.
+- Home pagination, search, details, fullscreen playback, play/pause, seeking,
+  Back precedence, replay, retry, cancellation, and consecutive sessions have
+  automated local coverage.
+- Native HLS automatic adaptation is shown honestly as `auto`; manual quality
+  selection is not offered because the current native-player seam cannot prove
+  a reliable manual switch.
+- Dated sanitized fixtures cover catalog, VOD, live, unavailable, paid, DRM,
   malformed, marker, and encryption response shapes.
-- Catalog and playback adapters return typed results and never expose raw
-  continuation URLs or signed URLs in failures.
-- The generated app has valid metadata and required PNG resources.
-- Packaging requires the external LG webOS CLI.
-- Installation and launch on a real LG C1 are **pending device evidence**.
+- Installation, playback, remote behavior, CORS, codecs, screensaver behavior,
+  and long-run stability on an actual LG C1 are **not yet verified**.
 
-See [development and device instructions](docs/development.md), the
-[contract foundation](docs/contract-foundation.md),
+See [MVP architecture and behavior](docs/mvp.md),
+[development and device instructions](docs/development.md), the
 [device-profile template](docs/device-profile.md), and the full
 [implementation plan](docs/implementation-plan.md).
 
-## Quick local verification
+## Local verification
 
 ```sh
 npm test
 npm run check
 ```
 
-No runtime packages or `npm install` step are required for the current
-baseline. Generated `dist/`, `artifacts/`, and `.ipk` files are intentionally
-not committed.
+No runtime packages or `npm install` step are required.
+
+## Desktop preview
+
+```sh
+npm run dev
+```
+
+Open `http://127.0.0.1:4173`. The development server exposes a same-origin
+proxy for only the four anonymous RUTUBE JSON GET routes required by the MVP.
+It rejects credentials and is not copied into `dist` or an IPK. Production
+packages request RUTUBE directly; desktop preview does not prove packaged-app
+CORS or TV playback.
+
+Generated `dist/`, `artifacts/`, and `.ipk` files are intentionally not
+committed.

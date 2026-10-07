@@ -271,8 +271,10 @@ Navigation -> AppFlow -> Catalog -> RUTUBE HTTP
 ```
 
 Every route change cancels work that can no longer affect the visible screen.
-Every playback exit calls `Player.close`, whether caused by Back, completion,
-error, suspension, or app shutdown.
+Every permanent playback exit calls `Player.close`, whether caused by Back,
+completion, error, route replacement, or app shutdown. A temporary visibility
+suspension is not an exit: the Player pauses and may resume that same session;
+if the app is closed while hidden, shutdown still closes it.
 
 ## Advertising and legal/product constraint
 

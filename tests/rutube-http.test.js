@@ -24,6 +24,19 @@ test("fetch adapter decodes JSON and omits request URLs from typed HTTP failures
   assert.doesNotMatch(JSON.stringify(unsafeOperation), /supersecret|private/);
 });
 
+test("fetch adapter preserves a development proxy path prefix", async () => {
+  let requestedUrl = null;
+  const http = createRutubeHttp({
+    baseUrl: "http://127.0.0.1:4173/rutube/",
+    fetchImpl: async (url) => {
+      requestedUrl = url;
+      return { ok: true, json: async () => ({ ok: true }) };
+    },
+  });
+  await http.json({ path: "/api/video/public-id/", operation: "catalog" });
+  assert.equal(requestedUrl, "http://127.0.0.1:4173/rutube/api/video/public-id/");
+});
+
 test("fetch adapter classifies caller cancellation", async () => {
   const http = createRutubeHttp({
     fetchImpl: (_url, options) => new Promise((_resolve, reject) => {

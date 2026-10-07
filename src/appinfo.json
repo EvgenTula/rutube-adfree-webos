@@ -1,14 +1,15 @@
 {
   "id": "io.github.evgentula.app.rutubeadfree",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "vendor": "EvgenTula",
   "type": "web",
   "main": "index.html",
   "title": "RUTUBE AdFree",
-  "appDescription": "Open-source RUTUBE client baseline for LG webOS",
+  "appDescription": "Anonymous RUTUBE client for LG webOS",
   "icon": "assets/icon.png",
   "largeIcon": "assets/large-icon.png",
   "iconColor": "#171820",
   "resolution": "1920x1080",
+  "disableBackHistoryAPI": true,
   "splashBackground": "assets/splash.png"
 }

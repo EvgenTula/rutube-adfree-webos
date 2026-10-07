@@ -18,9 +18,10 @@ RUTUBE playback is proven on the target LG C1.
   [`ADR 0001`](adr/0001-packaged-custom-frontend.md): a packaged custom frontend
   with native HLS playback. It is accepted for the Phase 2 spike and remains
   conditional on the real-device gate.
-- The Phase 2 contract foundation and the isolated Player state machine are
-  implemented locally; app-flow/UI integration and every LG C1 result are
-  pending. No desktop or fixture result is a device pass.
+- The Phase 2 contract foundation, isolated Player, Navigation, anonymous TV
+  UI, and AppFlow are implemented locally. Automated fixture and behavior tests
+  pass; every LG C1 result remains pending. No desktop or fixture result is a
+  device pass.
 
 ## Phase 0: repository and target baseline
 
@@ -88,10 +89,9 @@ complete**.
 ## Phase 2: real-device playback spike
 
 **Status (2026-10-07):** the HTTP, catalog, source-resolution, HLS-inspection,
-and Player contracts are implemented and pass local behavior/fixture tests. The
-native media adapter exists, but it is not yet composed into the app UI. No
-playback, CORS, lifecycle, codec, or long-run result has been recorded on the
-target LG C1.
+Player, Navigation, and AppFlow contracts are composed into the anonymous app
+and pass local behavior/fixture tests. No playback, CORS, lifecycle, codec, or
+long-run result has been recorded on the target LG C1.
 
 ### Work
 
@@ -147,6 +147,13 @@ documented platform reason.
 
 ## Phase 4: MVP
 
+**Status (2026-10-07):** the anonymous Home, pagination, Search, Details,
+fullscreen Player, controls, Back stack, retry, source refresh, replay, and
+consecutive-session orchestration are implemented and locally tested. Native
+HLS automatic quality is exposed; manual selection is not shown because the
+current Player cannot implement it reliably. The phase exit remains open until
+remote-only use and playback are verified on the target LG C1.
+
 Implement in vertical slices:
 
 1. App shell, routes, focus manager, and Magic Remote key handling.
@@ -169,9 +176,11 @@ basic catalog or playback.
 
 ## Phase 5: advertising behavior
 
-**Status (2026-10-07):** not started. Current evidence supports direct playback
-of an unmodified content HLS source and no manifest rewriting. Public
-distribution also requires the legal/product decision described in ADR 0001.
+**Status (2026-10-07):** the evidence-supported MVP behavior is implemented:
+it selects the direct unmodified content HLS source and does not initialize the
+official embedded player or VAST path. It performs no manifest rewriting. The
+result on representative device/network conditions remains unverified, and
+public distribution still requires the legal/product decision in ADR 0001.
 
 Implement only the strategy supported by Phase 1 evidence:
 
@@ -190,6 +199,11 @@ Implement only the strategy supported by Phase 1 evidence:
 - Limitations and known content exceptions are documented.
 
 ## Phase 6: stabilization and release
+
+**Status (2026-10-07):** bounded retry, stale-request cancellation, source
+refresh, route/player cleanup, development preview, and local automated checks
+are implemented. Device endurance, memory, lifecycle, installation, firmware
+coverage, and final IPK evidence remain pending.
 
 - Add bounded timeout/retry behavior and stale-request cancellation.
 - Release media resources and event listeners after every playback session.

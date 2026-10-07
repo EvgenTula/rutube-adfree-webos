@@ -57,7 +57,9 @@ export function createRutubeHttp({
 
     let response;
     try {
-      const target = url || new URL(path, baseUrl).toString();
+      const normalizedBase = baseUrl.endsWith("/") ? baseUrl : `${baseUrl}/`;
+      const relativePath = typeof path === "string" ? path.replace(/^\/+/, "") : "";
+      const target = url || new URL(relativePath, normalizedBase).toString();
       response = await fetchImpl(target, {
         method: "GET",
         headers: { Accept: responseType === "json" ? "application/json" : "application/vnd.apple.mpegurl, application/x-mpegURL, text/plain" },

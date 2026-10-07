@@ -1,7 +1,7 @@
 # Phase 0 development and LG C1 deployment
 
-This guide covers the minimal packaged web app only. It does not claim RUTUBE
-playback support. Commands are run from the repository root.
+This guide covers the anonymous packaged MVP. Commands are run from the
+repository root. Local results do not claim LG C1 playback support.
 
 ## Prerequisites
 
@@ -46,6 +46,30 @@ Run only the contract foundation tests with:
 ```sh
 npm run test:contracts
 ```
+
+Run only Navigation and AppFlow integration tests with:
+
+```sh
+npm run test:mvp
+```
+
+## Desktop preview
+
+Run the dependency-free preview server with:
+
+```sh
+npm run dev
+```
+
+Then open `http://127.0.0.1:4173`. On localhost only, the app routes its four
+required anonymous JSON endpoint families through `/rutube/` on the preview
+server. The development proxy accepts GET only, validates an exact route
+allowlist, rejects Cookie and Authorization headers, follows no redirects, and
+forwards no credentials. It is a development convenience for browser CORS and
+is not copied to `dist` or the IPK. HLS/CDN requests remain direct.
+
+Never expose this server on a public interface. Preview success does not prove
+packaged `file`-origin CORS, native HLS, codec support, or TV behavior.
 
 ## Create an IPK
 
@@ -96,9 +120,11 @@ ares-launch --device myTV io.github.evgentula.app.rutubeadfree
 ares-launch --device myTV --close io.github.evgentula.app.rutubeadfree
 ```
 
-Expected launch result: a static Phase 0 status screen showing the version from
-`src/appinfo.json`,
-safe diagnostics status, and an explicit pending LG C1 verification state.
+Expected launch result: the Home catalog appears, remote focus is visibly
+outlined, Search opens a normal text input, Details can start native fullscreen
+HLS, and two Back presses first hide player controls and then return to Details.
+This expectation remains unverified on the LG C1 until a dated result is
+recorded.
 
 ## Collect sanitized diagnostics
 
