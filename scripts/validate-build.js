@@ -47,6 +47,7 @@ for (const modulePath of [
   "js/catalog.js",
   "js/hls.js",
   "js/playback-sources.js",
+  "js/player.js",
 ]) {
   assert(existsSync(join(outputDir, modulePath)), `missing application module: ${modulePath}`);
 }

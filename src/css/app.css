@@ -17,6 +17,19 @@ body {
   overflow: hidden;
 }
 
+.player-media-active {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  object-fit: contain;
+}
+
 body {
   background:
     radial-gradient(circle at 70% 20%, rgba(255, 75, 98, 0.18), transparent 36%),

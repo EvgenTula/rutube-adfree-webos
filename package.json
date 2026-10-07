@@ -4,13 +4,14 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.js",
-    "check:syntax": "node --check src/js/diagnostics.js && node --check src/js/rutube-http.js && node --check src/js/catalog.js && node --check src/js/hls.js && node --check src/js/playback-sources.js && node --check src/js/app.js && node --check scripts/build.js && node --check scripts/validate-build.js && node --check tests/all.test.js",
+    "check:syntax": "node --check src/js/diagnostics.js && node --check src/js/rutube-http.js && node --check src/js/catalog.js && node --check src/js/hls.js && node --check src/js/playback-sources.js && node --check src/js/player.js && node --check src/js/app.js && node --check scripts/build.js && node --check scripts/validate-build.js && node --check tests/all.test.js && node --check tests/player.test.js && node --check tests/helpers/fake-media-adapter.js",
     "check": "npm run check:syntax && npm run build && node scripts/validate-build.js",
     "package:webos": "npm run check && ares-package --outdir artifacts dist",
     "package:webos:debug": "npm run check && ares-package --no-minify --outdir artifacts dist",
     "test": "node tests/all.test.js",
     "test:diagnostics": "node tests/diagnostics.test.js",
-    "test:contracts": "node tests/catalog.contract.test.js && node tests/hls.test.js && node tests/playback-sources.contract.test.js && node tests/rutube-http.test.js"
+    "test:contracts": "node tests/catalog.contract.test.js && node tests/hls.test.js && node tests/playback-sources.contract.test.js && node tests/rutube-http.test.js",
+    "test:player": "node tests/player.test.js"
   },
   "engines": {
     "node": ">=18"

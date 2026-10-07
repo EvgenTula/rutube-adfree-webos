@@ -18,9 +18,9 @@ RUTUBE playback is proven on the target LG C1.
   [`ADR 0001`](adr/0001-packaged-custom-frontend.md): a packaged custom frontend
   with native HLS playback. It is accepted for the Phase 2 spike and remains
   conditional on the real-device gate.
-- The Phase 2 contract foundation is implemented locally; UI/player integration
-  and every LG C1 result are pending. No desktop or fixture result is a device
-  pass.
+- The Phase 2 contract foundation and the isolated Player state machine are
+  implemented locally; app-flow/UI integration and every LG C1 result are
+  pending. No desktop or fixture result is a device pass.
 
 ## Phase 0: repository and target baseline
 
@@ -87,10 +87,11 @@ complete**.
 
 ## Phase 2: real-device playback spike
 
-**Status (2026-10-07):** the HTTP, catalog, source-resolution, and HLS-inspection
-contracts are implemented and pass local fixture tests. Player/UI integration
-is not yet implemented. No playback, CORS, lifecycle, codec, or long-run result
-has been recorded on the target LG C1.
+**Status (2026-10-07):** the HTTP, catalog, source-resolution, HLS-inspection,
+and Player contracts are implemented and pass local behavior/fixture tests. The
+native media adapter exists, but it is not yet composed into the app UI. No
+playback, CORS, lifecycle, codec, or long-run result has been recorded on the
+target LG C1.
 
 ### Work
 
