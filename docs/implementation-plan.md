@@ -8,6 +8,11 @@ RUTUBE playback is proven on the target LG C1.
 
 ## Phase 0: repository and target baseline
 
+**Status (2026-10-07):** the minimal packaged-app source, reproducible local
+build/validation, safe diagnostics, and deployment documentation are present.
+Local checks pass. webOS CLI packaging and every real LG C1 check remain
+pending; therefore the Phase 0 exit gate is **not complete**.
+
 ### Work
 
 - Record the TV's complete model suffix, firmware, webOS version, and region.

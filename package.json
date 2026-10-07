@@ -1,0 +1,17 @@
+{
+  "name": "rutube-adfree-webos",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.js",
+    "check:syntax": "node --check src/js/diagnostics.js && node --check src/js/app.js && node --check scripts/build.js && node --check scripts/validate-build.js && node --check tests/diagnostics.test.js",
+    "check": "npm run check:syntax && npm run build && node scripts/validate-build.js",
+    "package:webos": "npm run check && ares-package --outdir artifacts dist",
+    "package:webos:debug": "npm run check && ares-package --no-minify --outdir artifacts dist",
+    "test": "node tests/diagnostics.test.js",
+    "test:diagnostics": "node tests/diagnostics.test.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
