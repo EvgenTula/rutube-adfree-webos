@@ -6,6 +6,20 @@ Build in the order **research -> device playback proof -> architecture decision
 -> MVP -> stabilization -> package**. UI work starts only after representative
 RUTUBE playback is proven on the target LG C1.
 
+## Current status (2026-10-07)
+
+- Phase 0 local source/build/diagnostics baseline is complete; packaging and all
+  LG C1 checks remain pending.
+- Phase 1 desktop/network research is recorded in three reports under
+  `docs/research/`. It is sufficient for the playback spike, but the phase exit
+  remains open for sanitized fixtures and device/account-dependent evidence.
+- The architecture direction is recorded in
+  [`ADR 0001`](adr/0001-packaged-custom-frontend.md): a packaged custom frontend
+  with native HLS playback. It is accepted for the Phase 2 spike and remains
+  conditional on the real-device gate.
+- Phase 2 and every LG C1 result are pending. No desktop or research result is a
+  device pass.
+
 ## Phase 0: repository and target baseline
 
 **Status (2026-10-07):** the minimal packaged-app source, reproducible local
@@ -30,6 +44,14 @@ pending; therefore the Phase 0 exit gate is **not complete**.
 
 ## Phase 1: current-system research
 
+**Status (2026-10-07):** the existing-client/platform, current RUTUBE flow, and
+Rupoop protocol reports are complete. Anonymous desktop/network evidence covers
+catalog, search, details, VOD/live source selection, sampled HLS manifests, and
+the likely player-side advertising path. Sanitized executable fixtures, an
+actual ad break on the target network/device, source-expiry/CORS behavior, and
+unobserved media formats remain pending. The evidence is sufficient to start
+Phase 2, but the full Phase 1 exit gate is **not complete**.
+
 ### Work
 
 - Search GitHub and webOS Homebrew for existing RUTUBE webOS/LG/Smart TV clients
@@ -48,7 +70,7 @@ pending; therefore the Phase 0 exit gate is **not complete**.
 
 ### Deliverables
 
-- `docs/research.md` with dated sources and reproducible observations.
+- Dated, reproducible reports under `docs/research/`.
 - Endpoint/response and content/codec matrices.
 - Sanitized JSON and manifest fixtures.
 - A precise classification of the advertising delivery mechanism.
@@ -60,6 +82,9 @@ pending; therefore the Phase 0 exit gate is **not complete**.
 - The evidence is sufficient to implement a single-video playback spike.
 
 ## Phase 2: real-device playback spike
+
+**Status (2026-10-07):** pending. No playback, CORS, lifecycle, codec, or
+long-run result has been recorded on the target LG C1.
 
 ### Work
 
@@ -84,6 +109,12 @@ pending; therefore the Phase 0 exit gate is **not complete**.
 
 ## Phase 3: architecture decision
 
+**Status (2026-10-07):**
+[`ADR 0001`](adr/0001-packaged-custom-frontend.md) selects a packaged custom
+frontend with isolated RUTUBE adapters and native HTML5 HLS playback. The
+decision is accepted for implementing the playback spike, but the Phase 3 exit
+gate remains conditional on Phase 2 real-device evidence.
+
 Evaluate the options in order:
 
 1. **Thin wrapper/patch:** choose when the official TV frontend is usable,
@@ -96,6 +127,11 @@ Evaluate the options in order:
 Compare playback reliability, DOM/API coupling, remote UX, ad-control viability,
 maintenance cost, authentication, packaging, and any root requirement. Record
 the choice, rejected alternatives, evidence, and rollback conditions in an ADR.
+
+The official hosted frontend remains a compatibility oracle and a bounded
+fallback spike, not the primary implementation. A native/service-heavy design
+requires a new ADR after both custom-client and wrapper spikes fail for a
+documented platform reason.
 
 ### Exit criterion
 
@@ -125,6 +161,10 @@ basic catalog or playback.
 - Every MVP error mode has a recovery path or a clear terminal message.
 
 ## Phase 5: advertising behavior
+
+**Status (2026-10-07):** not started. Current evidence supports direct playback
+of an unmodified content HLS source and no manifest rewriting. Public
+distribution also requires the legal/product decision described in ADR 0001.
 
 Implement only the strategy supported by Phase 1 evidence:
 
