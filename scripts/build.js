@@ -1,15 +1,15 @@
 import {
   cpSync,
-  existsSync,
   mkdirSync,
   readFileSync,
   rmSync,
-  statSync,
   writeFileSync,
 } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { deflateSync } from "node:zlib";
+
+import { readRepositoryCommit } from "./git-metadata.js";
 
 const projectRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const sourceDir = join(projectRoot, "src");
@@ -98,46 +98,8 @@ function resolveCommit() {
   if (suppliedCommit && /^[0-9a-f]{7,40}$/i.test(suppliedCommit)) {
     return suppliedCommit;
   }
-
-  let gitDir = join(projectRoot, ".git");
-  if (!existsSync(gitDir)) {
-    return "unknown";
-  }
-
-  if (statSync(gitDir).isFile()) {
-    const marker = readFileSync(gitDir, "utf8").trim();
-    if (!marker.startsWith("gitdir: ")) {
-      return "unknown";
-    }
-    gitDir = resolve(projectRoot, marker.slice("gitdir: ".length));
-  }
-
-  const head = readFileSync(join(gitDir, "HEAD"), "utf8").trim();
-  if (/^[0-9a-f]{40}$/i.test(head)) {
-    return head.slice(0, 12);
-  }
-
-  if (!head.startsWith("ref: ")) {
-    return "unknown";
-  }
-
-  const ref = head.slice("ref: ".length);
-  const looseRef = join(gitDir, ...ref.split("/"));
-  if (existsSync(looseRef)) {
-    return readFileSync(looseRef, "utf8").trim().slice(0, 12);
-  }
-
-  const packedRefs = join(gitDir, "packed-refs");
-  if (existsSync(packedRefs)) {
-    const match = readFileSync(packedRefs, "utf8")
-      .split(/\r?\n/)
-      .find((line) => line.endsWith(` ${ref}`));
-    if (match) {
-      return match.split(" ", 1)[0].slice(0, 12);
-    }
-  }
-
-  return "unknown";
+  const repositoryCommit = readRepositoryCommit(projectRoot);
+  return repositoryCommit ? repositoryCommit.slice(0, 12) : "unknown";
 }
 
 rmSync(outputDir, { force: true, recursive: true });

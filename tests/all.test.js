@@ -6,4 +6,5 @@ import "./playback-sources.contract.test.js";
 import "./player.test.js";
 import "./navigation.test.js";
 import "./app-flow.integration.test.js";
+import "./git-metadata.test.js";
 import "./package-provenance.test.js";
